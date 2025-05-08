@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(), // Carregar tela de login ao iniciar
+      home: const LoginScreen(), // Carregar tela ao iniciar
     );
   }
 }

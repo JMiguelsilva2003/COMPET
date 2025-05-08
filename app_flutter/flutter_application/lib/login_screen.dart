@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'cadastro_screen.dart'; // Importando a tela de cadastro
+import 'perfil_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -55,7 +56,10 @@ class LoginScreen extends StatelessWidget {
                     foregroundColor: Colors.white,
                   ),
                   onPressed: () {
-                    // lógica para API FastAPI
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const PerfilScreen()),
+                      );
                   },
                   child: const Text('Entrar'),
                 ),
