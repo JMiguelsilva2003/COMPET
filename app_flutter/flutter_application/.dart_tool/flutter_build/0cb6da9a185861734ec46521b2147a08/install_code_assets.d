@@ -1,0 +1,1 @@
+ C:\\Users\\jmigu\\Desktop\\programas\\compet\\projeto\\COMPET\\app_flutter\\flutter_application\\.dart_tool\\flutter_build\\0cb6da9a185861734ec46521b2147a08\\native_assets.json: 
