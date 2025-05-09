@@ -1,9 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'cadastro_screen.dart'; // Importando a tela de cadastro
 import 'perfil_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final FlutterTts flutterTts = FlutterTts();
+
+  @override
+  void initState() {
+    super.initState();
+    flutterTts.setLanguage("pt-BR");
+    flutterTts.setSpeechRate(0.5);
+  }
+
+  Future<void> _speak(String text) async {
+    await flutterTts.speak(text);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,53 +34,72 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                'assets/logo.jpg',
-                width: 100,
-                height: 100,
+              GestureDetector(
+                onTap: () => _speak("Logotipo do aplicativo"),
+                child: Image.asset(
+                  'assets/logo.jpg',
+                  width: 100,
+                  height: 100,
+                ),
               ),
               const SizedBox(height: 20),
 
-              const Text(
-                'Bem-vindo!',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              GestureDetector(
+                onTap: () => _speak("Bem-vindo ao aplicativo. Insira seu CPF e senha para entrar."),
+                child: const Text(
+                  'Bem-vindo!',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
               ),
+
               const SizedBox(height: 30),
 
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'CPF',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
+              GestureDetector(
+                onTap: () => _speak("Digite seu CPF no campo abaixo."),
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'CPF',
+                    hintText: 'Digite seu CPF',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                   ),
                 ),
               ),
               const SizedBox(height: 15),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Senha',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
+
+              GestureDetector(
+                onTap: () => _speak("Digite sua senha no campo abaixo."),
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Senha',
+                    hintText: 'Digite sua senha',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                   ),
+                  obscureText: true,
                 ),
-                obscureText: true,
               ),
               const SizedBox(height: 20),
 
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
-                  ),
-                  onPressed: () {
+              GestureDetector(
+                onTap: () => _speak("Botão para entrar na conta"),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                    ),
+                    onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const PerfilScreen()),
                       );
-                  },
-                  child: const Text('Entrar'),
+                    },
+                    child: const Text('Entrar'),
+                  ),
                 ),
               ),
 
@@ -71,16 +109,19 @@ class LoginScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text('Não é registrado?'),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const CadastroScreen()),
-                      );
-                    },
-                    child: const Text(
-                      'Registre-se aqui',
-                      style: TextStyle(color: Colors.blue),
+                  GestureDetector(
+                    onTap: () => _speak("Clique aqui para criar uma conta"),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const CadastroScreen()),
+                        );
+                      },
+                      child: const Text(
+                        'Registre-se aqui',
+                        style: TextStyle(color: Colors.blue),
+                      ),
                     ),
                   ),
                 ],

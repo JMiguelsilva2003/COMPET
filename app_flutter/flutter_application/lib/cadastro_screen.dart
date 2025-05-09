@@ -1,85 +1,103 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
-class CadastroScreen extends StatelessWidget {
+class CadastroScreen extends StatefulWidget {
   const CadastroScreen({super.key});
+
+  @override
+  State<CadastroScreen> createState() => _CadastroScreenState();
+}
+
+class _CadastroScreenState extends State<CadastroScreen> {
+  final FlutterTts flutterTts = FlutterTts();
+
+  @override
+  void initState() {
+    super.initState();
+    flutterTts.setLanguage("pt-BR");
+    flutterTts.setSpeechRate(0.5);
+  }
+
+  Future<void> _speak(String text) async {
+    await flutterTts.speak(text);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('Cadastro'),
-        backgroundColor: Colors.blue,
-      ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Registre-se',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+            GestureDetector(
+              onTap: () => _speak("Registre-se. Crie sua conta para usar o aplicativo."),
+              child: const Text(
+                'Registre-se',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ),
 
             const SizedBox(height: 10),
 
-            const Text(
-              'Crie a sua conta para começar a usar',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+            GestureDetector(
+              onTap: () => _speak("Crie sua conta para começar a usar."),
+              child: const Text(
+                'Crie a sua conta para começar a usar',
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              ),
             ),
 
             const SizedBox(height: 20),
 
-            // Campo Nome
-            const Text('Nome'),
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Digite seu nome',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
+            GestureDetector(
+              onTap: () => _speak("Digite seu nome no campo abaixo."),
+              child: TextField(
+                decoration: InputDecoration(
+                  labelText: 'Nome',
+                  hintText: 'Digite seu nome',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
                 ),
               ),
             ),
 
             const SizedBox(height: 15),
 
-            // Campo CPF
-            const Text('CPF'),
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Digite seu CPF', 
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
+            GestureDetector(
+              onTap: () => _speak("Digite seu CPF no campo abaixo."),
+              child: TextField(
+                decoration: InputDecoration(
+                  labelText: 'CPF',
+                  hintText: 'Digite seu CPF',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
                 ),
               ),
             ),
 
             const SizedBox(height: 15),
 
-            // Campo Senha
-            const Text('Senha'),
-            TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                hintText: 'Digite sua senha',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
+            GestureDetector(
+              onTap: () => _speak("Digite sua senha no campo abaixo."),
+              child: TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Senha',
+                  hintText: 'Digite sua senha',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
                 ),
               ),
             ),
 
             const SizedBox(height: 15),
 
-            // Campo Confirmar Senha
-            TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                hintText: 'Confirme sua senha',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
+            GestureDetector(
+              onTap: () => _speak("Confirme sua senha no campo abaixo."),
+              child: TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  hintText: 'Confirme sua senha',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
                 ),
               ),
             ),
@@ -88,9 +106,12 @@ class CadastroScreen extends StatelessWidget {
 
             Row(
               children: [
-                Checkbox(
-                  value: false,
-                  onChanged: (bool? value) {},
+                GestureDetector(
+                  onTap: () => _speak("Marque esta caixa para aceitar os termos e política de privacidade."),
+                  child: Checkbox(
+                    value: false,
+                    onChanged: (bool? value) {},
+                  ),
                 ),
                 Expanded(
                   child: RichText(
@@ -122,15 +143,18 @@ class CadastroScreen extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
+            GestureDetector(
+              onTap: () => _speak("Botão de cadastro. Clique para criar sua conta."),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                  ),
+                  onPressed: () {},
+                  child: const Text('Cadastrar'),
                 ),
-                onPressed: () {},
-                child: const Text('Cadastrar'),
               ),
             ),
           ],
