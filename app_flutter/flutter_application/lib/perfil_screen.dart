@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'mapa_screen.dart';
 
 class PerfilScreen extends StatefulWidget {
   const PerfilScreen({super.key});
@@ -11,6 +12,7 @@ class PerfilScreen extends StatefulWidget {
 class _PerfilScreenState extends State<PerfilScreen> {
   final FlutterTts flutterTts = FlutterTts();
   int _selectedIndex = 2;
+
   @override
   void initState() {
     super.initState();
@@ -22,15 +24,20 @@ class _PerfilScreenState extends State<PerfilScreen> {
     await flutterTts.speak(text);
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  Future<void> _speakAndNavigate(String text, Widget screen) async {
+    await flutterTts.speak(text);
+    await Future.delayed(const Duration(seconds: 2));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => screen),
+    );
+  }
 
+  void _onItemTapped(int index) {
     if (index == 0) {
-      _speak("Você está indo para a tela de Mapa, onde pode visualizar sua localização.");
+      _speakAndNavigate("Você está indo para a tela de Mapa, onde pode visualizar sua localização.", const MapaScreen());
     } else if (index == 1) {
-      _speak("Agora você está indo para Relatórios, onde verá dados e análises.");
+      _speakAndNavigate("Agora você está indo para Relatórios, onde verá dados e análises.", const Placeholder());
     } else if (index == 2) {
       _speak("Você já está na tela de Perfil, onde pode ver sua conta e configurações.");
     }
@@ -46,7 +53,6 @@ class _PerfilScreenState extends State<PerfilScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Foto de perfil
               GestureDetector(
                 onTap: () => _speak("Foto de perfil do usuário"),
                 child: const CircleAvatar(
@@ -55,21 +61,14 @@ class _PerfilScreenState extends State<PerfilScreen> {
                 ),
               ),
               const SizedBox(height: 15),
-
-              // Nome do usuário
               GestureDetector(
                 onTap: () => _speak("Nome do usuário: Usuário Exemplo"),
                 child: const Text(
                   'Usuário Exemplo',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ),
-
               const SizedBox(height: 20),
-
               GestureDetector(
                 onTap: () => _speak("Conversar com inteligência artificial"),
                 child: Container(
@@ -82,16 +81,14 @@ class _PerfilScreenState extends State<PerfilScreen> {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Conversar com IA', style: TextStyle(fontSize: 18)),
-                      const Icon(Icons.arrow_forward_ios, color: Colors.grey),
+                    children: const [
+                      Text('Conversar com IA', style: TextStyle(fontSize: 18)),
+                      Icon(Icons.arrow_forward_ios, color: Colors.grey),
                     ],
                   ),
                 ),
               ),
-
               const SizedBox(height: 15),
-
               GestureDetector(
                 onTap: () => _speak("Sair da conta"),
                 child: Container(
@@ -104,9 +101,9 @@ class _PerfilScreenState extends State<PerfilScreen> {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Sair da Conta', style: TextStyle(fontSize: 18, color: Colors.red)),
-                      const Icon(Icons.arrow_forward_ios, color: Colors.red),
+                    children: const [
+                      Text('Sair da Conta', style: TextStyle(fontSize: 18, color: Colors.red)),
+                      Icon(Icons.arrow_forward_ios, color: Colors.red),
                     ],
                   ),
                 ),
@@ -115,19 +112,18 @@ class _PerfilScreenState extends State<PerfilScreen> {
           ),
         ),
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
             icon: GestureDetector(
-              onTap: () => _speak("Botão de Mapa - visualizar localização."),
+              onTap: () => _speakAndNavigate("Botão de Mapa - visualizar localização.", const MapaScreen()),
               child: const Icon(Icons.map),
             ),
             label: 'Mapa',
           ),
           BottomNavigationBarItem(
             icon: GestureDetector(
-              onTap: () => _speak("Botão de Relatórios - visualizar dados."),
+              onTap: () => _speakAndNavigate("Botão de Relatórios - visualizar dados.", const Placeholder()), 
               child: const Icon(Icons.article),
             ),
             label: 'Relatórios',
@@ -135,7 +131,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
           BottomNavigationBarItem(
             icon: GestureDetector(
               onTap: () => _speak("Botão de Perfil - ver configurações."),
-              child: const Icon(Icons.person, color: Colors.blue), 
+              child: const Icon(Icons.person, color: Colors.blue),
             ),
             label: 'Perfil',
           ),
