@@ -1,40 +1,26 @@
 import sqlite3
 import os
 
-# Criação do banco no app
+# Caminho do banco de dados SQLite
 DB_PATH = "app/imagens.db"
 
-def inicializar_db():
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS imagens (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome_arquivo TEXT NOT NULL,
-        agricultor TEXT NOT NULL,
-        latitude REAL,
-        longitude REAL
-    )
-    """)
-    conn.commit()
-    conn.close()
-
+# Inicialização do banco de dados
 def inicializar_db():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
-    # Tabela para imagens
+    # Tabela para armazenar imagens com nome do agricultor
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS imagens (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nome_arquivo TEXT NOT NULL,
-        agricultor TEXT NOT NULL,
+        cpf_agricultor TEXT NOT NULL,
         latitude REAL,
         longitude REAL
     )
     """)
 
-    # Tabela para usuários
+    # Tabela de usuários (nome, cpf, senha)
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -47,6 +33,27 @@ def inicializar_db():
     conn.commit()
     conn.close()
 
+# Salvar imagem com nome, lat, lon
+def salvar_imagem(nome_arquivo, cpf_agricultor, latitude, longitude):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+    INSERT INTO imagens (nome_arquivo, cpf_agricultor, latitude, longitude)
+    VALUES (?, ?, ?, ?)
+    """, (nome_arquivo, cpf_agricultor, latitude, longitude))
+    conn.commit()
+    conn.close()
+
+# Listar imagens
+def listar_imagens():
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("SELECT nome_arquivo, cpf_agricultor, latitude, longitude FROM imagens")
+    resultados = cursor.fetchall()
+    conn.close()
+    return resultados
+
+# Salvar novo usuário
 def salvar_usuario(nome, cpf, senha):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -57,30 +64,12 @@ def salvar_usuario(nome, cpf, senha):
     conn.commit()
     conn.close()
 
-
-def salvar_imagem(nome_arquivo, agricultor, latitude, longitude):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute("""
-    INSERT INTO imagens (nome_arquivo, agricultor, latitude, longitude)
-    VALUES (?, ?, ?, ?)
-    """, (nome_arquivo, agricultor, latitude, longitude))
-    conn.commit()
-    conn.close()
-
-def listar_imagens():
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute("SELECT nome_arquivo, agricultor, latitude, longitude FROM imagens")
-    resultados = cursor.fetchall()
-    conn.close()
-    return resultados
-
+# Verificar login por CPF e senha
 def verificar_usuario(cpf, senha):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("""
-    SELECT id, nome FROM usuarios WHERE cpf = ? AND senha = ?
+    SELECT id, nome, cpf FROM usuarios WHERE cpf = ? AND senha = ?
     """, (cpf, senha))
     resultado = cursor.fetchone()
     conn.close()

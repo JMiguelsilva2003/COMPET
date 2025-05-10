@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'mapa_screen.dart';
 import 'relatorio_screen.dart';
+import 'login_screen.dart';
+import 'api_service.dart';
 
 class PerfilScreen extends StatefulWidget {
   const PerfilScreen({super.key});
@@ -28,10 +30,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
   Future<void> _speakAndNavigate(String text, Widget screen) async {
     await flutterTts.speak(text);
     await Future.delayed(const Duration(seconds: 2));
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => screen),
-    );
+    Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
   }
 
   void _onItemTapped(int index) {
@@ -44,8 +43,27 @@ class _PerfilScreenState extends State<PerfilScreen> {
     }
   }
 
+  void _logout() {
+    setState(() {
+      UserSession.nomeUsuario = null;
+      UserSession.cpfUsuario = null;
+    });
+
+    _speak("Você saiu da conta. Redirecionando para tela de login.");
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+        (route) => false,
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    String nome = UserSession.nomeUsuario ?? "Usuário Exemplo";
+    String cpf = UserSession.cpfUsuario ?? "000.000.000-00";
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -63,13 +81,21 @@ class _PerfilScreenState extends State<PerfilScreen> {
               ),
               const SizedBox(height: 15),
               GestureDetector(
-                onTap: () => _speak("Nome do usuário: Usuário Exemplo"),
-                child: const Text(
-                  'Usuário Exemplo',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                onTap: () => _speak("Nome do usuário: $nome"),
+                child: Text(
+                  nome,
+                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 5),
+              GestureDetector(
+                onTap: () => _speak("CPF do usuário: $cpf"),
+                child: Text(
+                  'CPF: $cpf',
+                  style: const TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+              ),
+              const SizedBox(height: 25),
               GestureDetector(
                 onTap: () => _speak("Conversar com inteligência artificial"),
                 child: Container(
@@ -91,20 +117,20 @@ class _PerfilScreenState extends State<PerfilScreen> {
               ),
               const SizedBox(height: 15),
               GestureDetector(
-                onTap: () => _speak("Sair da conta"),
+                onTap: _logout,
                 child: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: Colors.grey.shade300),
+                    border: Border.all(color: Colors.red),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
                       Text('Sair da Conta', style: TextStyle(fontSize: 18, color: Colors.red)),
-                      Icon(Icons.arrow_forward_ios, color: Colors.red),
+                      Icon(Icons.logout, color: Colors.red),
                     ],
                   ),
                 ),

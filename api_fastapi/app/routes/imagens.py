@@ -1,61 +1,46 @@
 from fastapi import APIRouter, File, UploadFile, Form
 import os
-from PIL import Image
 from app.database import salvar_imagem, listar_imagens
-import piexif
-
-DIRETORIO_MAPAS = "app/mapas"
-os.makedirs(DIRETORIO_MAPAS, exist_ok=True)
+from app import globais 
 
 router = APIRouter()
-
-def converter_gps_para_decimal(gps_data):
-    def _convert(val):
-        return val[0][0] / val[0][1] + val[1][0] / val[1][1] / 60 + val[2][0] / val[2][1] / 3600
-
-    lat = _convert(gps_data['GPSLatitude'])
-    if gps_data['GPSLatitudeRef'] != b'N':
-        lat = -lat
-
-    lon = _convert(gps_data['GPSLongitude'])
-    if gps_data['GPSLongitudeRef'] != b'E':
-        lon = -lon
-
-    return lat, lon
 
 @router.post("/upload")
 async def upload_imagem(
     imagem: UploadFile = File(...),
-    agricultor: str = Form(...)
+    cpf_agricultor: str = Form(...),
+    latitude: float = Form(...),
+    longitude: float = Form(...)
 ):
-    caminho = os.path.join(DIRETORIO_MAPAS, imagem.filename)
+    # Caminho usando o diretório global de imagens
+    caminho = os.path.join(globais.DIRETORIO_IMAGENS, imagem.filename)
+
+    # Salvando fisicamente a imagem no diretório definido
     with open(caminho, "wb") as buffer:
         buffer.write(await imagem.read())
 
     try:
-        img = Image.open(caminho)
-        exif_dict = piexif.load(img.info["exif"])
-        gps_info = exif_dict.get("GPS")
-
-        if not gps_info:
-            raise ValueError("Imagem não contém informações GPS.")
-
-        lat, lon = converter_gps_para_decimal(gps_info)
-        salvar_imagem(imagem.filename, agricultor, lat, lon)
+        # Salvar metadados no banco de dados
+        salvar_imagem(imagem.filename, cpf_agricultor, latitude, longitude)
 
         return {
             "mensagem": "Imagem recebida com sucesso",
             "arquivo": imagem.filename,
-            "agricultor": agricultor,
-            "latitude": lat,
-            "longitude": lon
+            "cpf_agricultor": cpf_agricultor,
+            "latitude": latitude,
+            "longitude": longitude,
+            "salvo_em": caminho
         }
 
     except Exception as e:
         return {
-            "erro": "Não foi possível extrair localização",
+            "erro": "Não foi possível salvar imagem no banco",
             "detalhes": str(e)
         }
+
+import os
+
+import os
 
 @router.get("/listar")
 def listar():
@@ -63,9 +48,10 @@ def listar():
     return [
         {
             "arquivo": d[0],
-            "agricultor": d[1],
+            "cpf_agricultor": d[1],
             "latitude": d[2],
-            "longitude": d[3]
+            "longitude": d[3],
+            "caminho_local": f"http://192.168.1.16:8000/static/imagens/{d[0]}"
         }
         for d in dados
     ]

@@ -36,5 +36,6 @@ def login_usuario(dados: UsuarioLogin):
     return {
         "mensagem": f"Bem-vindo, {usuario[1]}!",
         "usuario_id": usuario[0],
-        "nome": usuario[1]
+        "nome": usuario[1],
+        "cpf": usuario[2] 
     }

@@ -43,28 +43,34 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<void> _loginUsuario() async {
-    try {
-      final response = await ApiService.loginUser(_cpfController.text, _senhaController.text);
-      String mensagem = response["mensagem"];
+Future<void> _loginUsuario() async {
+  try {
+    final response = await ApiService.loginUser(_cpfController.text, _senhaController.text);
+    String mensagem = response["mensagem"];
+    String? nome = response["nome"];  
+    String? cpf = response["cpf"];   
 
-      setState(() {
-        _loginMessage = mensagem;
-      });
+    setState(() {
+      _loginMessage = mensagem;
+    });
 
-      // Se a mensagem contiver "Bem-vindo", redireciona para perfil
-      if (mensagem.contains("Bem-vindo")) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const PerfilScreen()),
-        );
-      }
-    } catch (error) {
-      setState(() {
-        _loginMessage = "❌ CPF ou senha inválidos.";
-      });
+    if (mensagem.contains("Bem-vindo")) {
+      // Salva na sessão
+      UserSession.nomeUsuario = nome;
+      UserSession.cpfUsuario = cpf;
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const PerfilScreen()),
+      );
     }
+  } catch (error) {
+    setState(() {
+      _loginMessage = "❌ CPF ou senha inválidos.";
+    });
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
