@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'mapa_screen.dart';
+import 'relatorio_screen.dart';
 
 class PerfilScreen extends StatefulWidget {
   const PerfilScreen({super.key});
@@ -37,7 +38,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
     if (index == 0) {
       _speakAndNavigate("Você está indo para a tela de Mapa, onde pode visualizar sua localização.", const MapaScreen());
     } else if (index == 1) {
-      _speakAndNavigate("Agora você está indo para Relatórios, onde verá dados e análises.", const Placeholder());
+      _speakAndNavigate("Agora você está indo para Relatórios, onde verá dados e análises.", const RelatorioScreen());
     } else if (index == 2) {
       _speak("Você já está na tela de Perfil, onde pode ver sua conta e configurações.");
     }
@@ -123,10 +124,10 @@ class _PerfilScreenState extends State<PerfilScreen> {
           ),
           BottomNavigationBarItem(
             icon: GestureDetector(
-              onTap: () => _speakAndNavigate("Botão de Relatórios - visualizar dados.", const Placeholder()), 
+              onTap: () => _speakAndNavigate("Botão de Relatórios - visualizar dados.", const RelatorioScreen()),
               child: const Icon(Icons.article),
             ),
-            label: 'Relatórios',
+            label: 'Relatório',
           ),
           BottomNavigationBarItem(
             icon: GestureDetector(

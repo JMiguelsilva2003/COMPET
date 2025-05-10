@@ -87,7 +87,7 @@
     },
     {
       "name": "flutter",
-      "rootUri": "file:///C:/src/src/flutter/packages/flutter",
+      "rootUri": "file:///C:/src/flutter/packages/flutter",
       "packageUri": "lib/",
       "languageVersion": "3.7"
     },
@@ -105,7 +105,7 @@
     },
     {
       "name": "flutter_test",
-      "rootUri": "file:///C:/src/src/flutter/packages/flutter_test",
+      "rootUri": "file:///C:/src/flutter/packages/flutter_test",
       "packageUri": "lib/",
       "languageVersion": "3.7"
     },
@@ -117,7 +117,7 @@
     },
     {
       "name": "flutter_web_plugins",
-      "rootUri": "file:///C:/src/src/flutter/packages/flutter_web_plugins",
+      "rootUri": "file:///C:/src/flutter/packages/flutter_web_plugins",
       "packageUri": "lib/",
       "languageVersion": "3.7"
     },
@@ -279,7 +279,7 @@
     },
     {
       "name": "sky_engine",
-      "rootUri": "file:///C:/src/src/flutter/bin/cache/pkg/sky_engine",
+      "rootUri": "file:///C:/src/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
       "languageVersion": "3.7"
     },
@@ -356,16 +356,40 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "webview_flutter",
+      "rootUri": "file:///C:/Users/jmigu/AppData/Local/Pub/Cache/hosted/pub.dev/webview_flutter-4.11.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "webview_flutter_android",
+      "rootUri": "file:///C:/Users/jmigu/AppData/Local/Pub/Cache/hosted/pub.dev/webview_flutter_android-4.4.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "webview_flutter_platform_interface",
+      "rootUri": "file:///C:/Users/jmigu/AppData/Local/Pub/Cache/hosted/pub.dev/webview_flutter_platform_interface-2.11.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "webview_flutter_wkwebview",
+      "rootUri": "file:///C:/Users/jmigu/AppData/Local/Pub/Cache/hosted/pub.dev/webview_flutter_wkwebview-3.20.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
       "name": "flutter_application",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.7"
     }
   ],
-  "generated": "2025-05-09T12:50:32.509113Z",
+  "generated": "2025-05-10T03:34:48.495910Z",
   "generator": "pub",
   "generatorVersion": "3.7.2",
-  "flutterRoot": "file:///C:/src/src/flutter",
+  "flutterRoot": "file:///C:/src/flutter",
   "flutterVersion": "3.29.3",
   "pubCache": "file:///C:/Users/jmigu/AppData/Local/Pub/Cache"
 }
