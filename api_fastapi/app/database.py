@@ -75,3 +75,13 @@ def listar_imagens():
     resultados = cursor.fetchall()
     conn.close()
     return resultados
+
+def verificar_usuario(cpf, senha):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+    SELECT id, nome FROM usuarios WHERE cpf = ? AND senha = ?
+    """, (cpf, senha))
+    resultado = cursor.fetchone()
+    conn.close()
+    return resultado  # None se não encontrado

@@ -35,4 +35,22 @@ class ApiService {
       throw Exception("Erro no cadastro: ${jsonDecode(response.body)["detail"]}");
     }
   }
+
+    // POST - Login do usuário
+  static Future<Map<String, dynamic>> loginUser(String cpf, String senha) async {
+    final response = await http.post(
+      Uri.parse("${ApiConfig.baseUrl}/usuarios/login"),
+      headers: ApiConfig.getHeaders(),
+      body: jsonEncode({
+        "cpf": cpf,
+        "senha": senha,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception("CPF ou senha inválidos.");
+    }
+  }
 }
