@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'cadastro_screen.dart'; // Importando a tela de cadastro
 import 'perfil_screen.dart';
+import 'api_service.dart'; // Importando a API
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,16 +13,31 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final FlutterTts flutterTts = FlutterTts();
+  String _apiStatus = "Verificando conexão...";
 
   @override
   void initState() {
     super.initState();
     flutterTts.setLanguage("pt-BR");
     flutterTts.setSpeechRate(0.5);
+    _testApiConnection();
   }
 
   Future<void> _speak(String text) async {
     await flutterTts.speak(text);
+  }
+
+  Future<void> _testApiConnection() async {
+    try {
+      String message = await ApiService.testConnection();
+      setState(() {
+        _apiStatus = "✅ API Online: $message";
+      });
+    } catch (error) {
+      setState(() {
+        _apiStatus = "❌ Erro na conexão com API";
+      });
+    }
   }
 
   @override
@@ -50,6 +66,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   'Bem-vindo!',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
+              ),
+
+              const SizedBox(height: 10),
+
+              Text(
+                _apiStatus,
+                style: const TextStyle(color: Colors.grey, fontSize: 16),
               ),
 
               const SizedBox(height: 30),
